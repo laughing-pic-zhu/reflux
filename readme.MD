@@ -1,8 +1,9 @@
 #需求整理
-Action调用
-Store改变
-Store同步给组件
+-Action 收集发布任务
+-Store 基于Action任务做一一对应,如action.dosomething 对应onDosomething函数
+-Action 发布dosomething任务,Store随即做出响应调用onDosomething函数
 
-action负责抽象页面操作
-store里面做state修改
+#测试
+调用test.js
+
 
