@@ -1,32 +1,43 @@
 'use strict';
 const Event = require('./event');
 const util = require('./util');
-var option = util.option;
-var event = new Event();
+const option = util.option;
 
-var Reflux = {
+const Reflux = {
   createActions: function (items) {
-    var obj = {};
+    var actions = {};
     items.forEach(item => {
-        obj[item] = function (query) {
-          event.trigger(item, query);
+        actions[item] = function () {
         };
       }
     );
-    return obj;
+    return actions;
   },
 
   createStore: function (obj) {
-    var actions = obj.listenables;
+    const StateEvent=Event.StateEvent;
+    const ActionEvent=Event.ActionEvent;
+    const actionEvent = new ActionEvent();
+    const stateEvent = new StateEvent();
+
+    const actions = obj.listenables;
 
     Object.keys(actions).forEach(action=> {
-      var callback = obj['on' + option(action)] || function () {
+      const callback = obj['on' + option(action)] || function () {
         };
-      event.addSubscribe(action, callback)
+      actionEvent.addSubscribe(action, callback.bind(stateEvent));
+
+      actions[action] = function (query) {
+        actionEvent.trigger(action, query);
+      };
+
     });
-    return event
+    return stateEvent
+  },
+  listenTo: function (store,callback) {
+    store.addSubscribe(callback.bind(this));
   }
-}
+};
 
 module.exports = Reflux;
 
