@@ -1,5 +1,5 @@
 const Reflux = require('./src/init');
-
+const Mixin = require('./src/mixin');
 const actions = Reflux.createActions(['add', 'edit', 'list', 'delete']);
 
 const store = Reflux.createStore({
@@ -21,19 +21,16 @@ const store = Reflux.createStore({
   onDelete: function (query) {
     console.log('delete');
     console.log(query);
-  },
-})
+  }
+});
 
+var obj = { a: 1 };
 
-
-
-var obj = {a:1};
-
-Object.assign(obj, { listenTo: Reflux.listenTo });
+Mixin.onClass(obj, { listenTo: Reflux.listenTo });
 
 obj.listenTo(store, function (query) {
-  console.log(query)
+  console.log(query);
   console.log(this)
-})
+});
 
 actions.edit({ edit: 1 });
