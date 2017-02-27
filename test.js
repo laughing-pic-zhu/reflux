@@ -30,7 +30,7 @@ Mixin.onClass(obj, { listenTo: Reflux.listenTo });
 
 obj.listenTo(store, function (query) {
   console.log(query);
-  console.log(this)
+  console.log(this);
 });
 
 actions.edit({ edit: 1 });
